@@ -27,7 +27,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         // ACL(Access Control List - 접근 제어 목록)의 예외 URL을 설정
         web.ignoring().antMatchers("/v2/api-docs", "/v1/api-docs", "/configuration/ui",
                                 "/swagger-resources/**", "/configuration/security",
-                                "/swagger-ui.html", "/webjars/**", "/swagger/**");
+                                "/swagger-ui.html", "/webjars/**", "/swagger/**")
+                .antMatchers(HttpMethod.POST, "/user")
+                .antMatchers("/login")
+        ;
     }
 
     @Override

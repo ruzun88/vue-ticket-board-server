@@ -1,6 +1,7 @@
 package org.ruzun88.ticketmanager.user.model;
 
 import lombok.*;
+import org.ruzun88.ticketmanager.user.dto.UserInfoDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -88,5 +89,9 @@ public class UserInfo implements UserDetails {
   public boolean isEnabled() {
     // 계정이 사용 가능한지 확인하는 로직
     return true; // true -> 사용 가능
+  }
+
+  public UserInfoDto toResponse() {
+    return new UserInfoDto(this.email, "", this.auth);
   }
 }

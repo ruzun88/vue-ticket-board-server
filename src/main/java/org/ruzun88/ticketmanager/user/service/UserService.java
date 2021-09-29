@@ -3,6 +3,7 @@ package org.ruzun88.ticketmanager.user.service;
 import lombok.RequiredArgsConstructor;
 import org.ruzun88.ticketmanager.user.dto.UserInfoDto;
 import org.ruzun88.ticketmanager.user.model.UserInfo;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.ruzun88.ticketmanager.user.repository.UserRepository;
@@ -43,4 +44,12 @@ public class UserService implements UserDetailsService {
         .orElseThrow(() -> new UsernameNotFoundException((email)));
   }
 
+  public UserInfoDto loginUser(UserInfo userInfo) {
+    UserInfo loadedUser = this.loadUserByUsername(userInfo.getUsername());
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    if (!loadedUser.getPassword().equals(encoder.encode(userInfo.getPassword()))) {
+      throw new BadCredentialsException("password not matched");
+    }
+    return loadedUser.toResponse();
+  }
 }
