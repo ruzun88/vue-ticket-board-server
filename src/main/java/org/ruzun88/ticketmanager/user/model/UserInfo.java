@@ -29,13 +29,13 @@ public class UserInfo implements UserDetails {
   private String password;
 
   @Column(name = "auth")
-  private String auth;
+  private String role;
 
   @Builder
   public UserInfo(String email, String password) {
     this.email = email;
     this.password = password;
-    this.auth = "USER"; // 관리자는 일반 사용자로 생성 후, DB에서 변경
+    this.role = "USER"; // 관리자는 일반 사용자로 생성 후, DB에서 변경
   }
 
   // 사용자의 권한을 콜렉션 형태로 반환
@@ -44,7 +44,7 @@ public class UserInfo implements UserDetails {
   public Collection<? extends GrantedAuthority> getAuthorities() {
     Set<GrantedAuthority> roles = new HashSet<>();
 
-    for (String role : auth.split(",")) {
+    for (String role : role.split(",")) {
       roles.add(new SimpleGrantedAuthority(role));
     }
 
@@ -92,6 +92,6 @@ public class UserInfo implements UserDetails {
   }
 
   public UserInfoDto toResponse() {
-    return new UserInfoDto(this.email, "", this.auth);
+    return new UserInfoDto(this.email, "", this.role);
   }
 }

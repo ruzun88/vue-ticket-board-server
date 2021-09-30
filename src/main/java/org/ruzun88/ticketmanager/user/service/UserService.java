@@ -45,9 +45,9 @@ public class UserService implements UserDetailsService {
   }
 
   public UserInfoDto loginUser(UserInfo userInfo) {
-    UserInfo loadedUser = this.loadUserByUsername(userInfo.getUsername());
+    UserInfo loadedUser = this.loadUserByUsername(userInfo.getEmail());
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    if (!loadedUser.getPassword().equals(encoder.encode(userInfo.getPassword()))) {
+    if (!encoder.matches(userInfo.getPassword(), loadedUser.getPassword())) {
       throw new BadCredentialsException("password not matched");
     }
     return loadedUser.toResponse();
